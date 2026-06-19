@@ -1,3 +1,9 @@
+permissions:
+  contents: read
+  deployments: write
+  pages: write
+  id-token: write
+
 on:
   release:
     types:
