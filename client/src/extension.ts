@@ -116,10 +116,9 @@ export function activate(context: ExtensionContext) {
     }
 
     const getConfigString = (serverInfo : any) => {
-      const clean_strings = (str: string) => {
-        // Properly escape backticks and pipes in the string, replace newlines with spaces
-        return str.replace(/`/g, '\\`').replace(/\|/g, '\\|').replace(/\n/g, ' ');
-      };
+	      const clean_strings = (str: string) => {
+	        return String(str).replace(/[`|\\]/g, '\\$&').replace(/\r?\n|\r/g, ' ');
+	      };
         return (
 `| Debug Information | Value |
 | ----------------- | -------------------------------- |
