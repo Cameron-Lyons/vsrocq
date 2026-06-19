@@ -5,7 +5,7 @@
   "files": [
     "dist"
   ],
-  "main": "./dist/pp-display.es.js",
+  "main": "./dist/pp-display.js",
   "types": "./dist/main.d.ts",
   "description": "A react library to format and display Rocq Pp types.",
   "private": true,
@@ -25,17 +25,23 @@
     "react-dom": "^17.0.2",
     "react-hook": "^0.0.1",
     "react-icons": "^4.7.1",
-    "uuidv4": "^6.2.13"
+    "uuid": "^11.1.1"
   },
   "devDependencies": {
     "@types/react": "^17.0.33",
     "@types/react-dom": "^17.0.10",
     "@types/vscode-webview": "^1.57.0",
-    "@vitejs/plugin-react": "^1.0.7",
-    "typescript": "^4.4.4",
-    "vite": "^2.9.18",
-    "vite-plugin-dts": "^4.0.1",
-    "vite-plugin-externalize-deps": "^0.8.0",
-    "vite-plugin-lib-inject-css": "^2.1.1"
+    "@vitejs/plugin-react": "^5.2.0",
+    "typescript": "^5.9.3",
+    "vite": "^6.4.3",
+    "vite-plugin-dts": "^5.0.2",
+    "vite-plugin-externalize-deps": "^0.10.0",
+    "vite-plugin-lib-inject-css": "^2.2.2"
+  },
+  "resolutions": {
+    "fast-uri": "3.1.2",
+    "lodash": "4.18.1",
+    "@vue/language-core/minimatch": "9.0.7",
+    "@microsoft/api-extractor/minimatch": "10.2.5"
   }
 }
