@@ -987,14 +987,6 @@
       };
     }
     {
-      name = "react_hook___react_hook_0.0.1.tgz";
-      path = fetchurl {
-        name = "react_hook___react_hook_0.0.1.tgz";
-        url  = "https://registry.yarnpkg.com/react-hook/-/react-hook-0.0.1.tgz";
-        sha512 = "2/Guf88/dGyFgUT7QDtBJ1l7V5yqTcAHlNRIZNTu2xg0KkDjaiYZp79ah49NDaLMI/J7voWcKLU8wMONG4A/1g==";
-      };
-    }
-    {
       name = "react_icons___react_icons_4.7.1.tgz";
       path = fetchurl {
         name = "react_icons___react_icons_4.7.1.tgz";
