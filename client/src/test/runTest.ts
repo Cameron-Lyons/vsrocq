@@ -1,10 +1,11 @@
 import * as path from 'path';
 import * as fs from 'node:fs/promises';
-import * as tmp from 'tmp-promise';
+import * as os from 'os';
 
 import { runTests } from '@vscode/test-electron';
 
 async function main() {
+	const storagePath = await fs.mkdtemp(path.join(os.tmpdir(), 'vsrocq-test-'));
 	try {
 		// The folder containing the Extension Manifest package.json
 		// Passed to `--extensionDevelopmentPath`
@@ -14,8 +15,7 @@ async function main() {
 		// Passed to --extensionTestsPath
 		const extensionTestsPath = path.resolve(__dirname, './suite/index');
 
-		const storagePath = await tmp.dir();
-		const userDataDir = path.join(storagePath.path, 'settings');
+		const userDataDir = path.join(storagePath, 'settings');
         const userSettingsPath = path.join(userDataDir, 'User');
 
 		const vsrocqPath = process.env.VSROCQPATH || path.resolve(__dirname, "../../../language-server/_build/install/default/bin/vsrocqtop");
@@ -41,10 +41,12 @@ async function main() {
             extensionDevelopmentPath, 
             extensionTestsPath, 
             launchArgs });
-	} catch (err) {
-		console.error('Failed to run tests');
-		process.exit(1);
+	} finally {
+		await fs.rm(storagePath, { recursive: true, force: true, maxRetries: 3 });
 	}
 }
 
-main();
+main().catch(() => {
+	console.error('Failed to run tests');
+	process.exit(1);
+});
