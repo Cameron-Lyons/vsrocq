@@ -1,7 +1,7 @@
 import { FunctionComponent, useRef, useState, useEffect, useLayoutEffect} from 'react';
 import useResizeObserver from '@react-hook/resize-observer';
 import {ResizeObserverEntry} from '@juggle/resize-observer';
-import { v4 as uuid } from 'uuid';
+import { randomUUID } from './uuid';
 
 import { PpString, PpMode, BoxDisplay, Term, Break, Box, DisplayType, BreakInfo, HideStates, Token, TokenType } from './types';
 import PpBox from './pp-box';
@@ -103,7 +103,7 @@ const ppDisplay : FunctionComponent<PpProps> = (props) => {
     };
 
     const getPpTag  = (pp: PpString, tag: string, indent: number, mode: PpMode, depth: number) => {
-        const id = uuid();
+        const id = randomUUID();
         switch(pp[0]) {
             case 'Ppcmd_empty':
                 console.error('Received PpTag with empty');
@@ -180,7 +180,7 @@ const ppDisplay : FunctionComponent<PpProps> = (props) => {
                 case 'Ppcmd_tag':
                     return [getPpTag(pp[2], rocqCss[pp[1].replaceAll(".", "-")], indent, mode, depth)];
                 case 'Ppcmd_print_break':
-                    const brId = uuid();
+                    const brId = randomUUID();
                     return [{
                         id: "box-"+boxId+"break-"+brId,
                         type: DisplayType.break,
@@ -229,7 +229,7 @@ const ppDisplay : FunctionComponent<PpProps> = (props) => {
     };
 
     const boxifyPpString = (pp : PpString, depth : number = 0) => {
-        const id = uuid();
+        const id = randomUUID();
         switch (pp[0]) {
             case 'Ppcmd_empty':
             case 'Ppcmd_string':
