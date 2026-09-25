@@ -1,5 +1,5 @@
 import React, {useState, useCallback, useEffect, KeyboardEvent, ChangeEventHandler, useRef, ChangeEvent} from 'react';
-import { v4 as uuid } from 'uuid';
+import { randomUUID } from 'pp-display';
 
 import SearchPage from './components/templates/SearchPage';
 import "./App.css";
@@ -24,7 +24,7 @@ import {
 } from './types';
 
 const defaultTab = {
-    id: uuid(),
+    id: randomUUID(),
     title: "New Tab",
     pattern: "", 
     type: QueryType.search,
@@ -259,7 +259,7 @@ const app = () => {
     const handleImmediateQueryNotification = (notification: Query) => {
         const {pattern, type} = notification;
         const result = initResult(type);
-        const id = uuid();
+        const id = randomUUID();
         const newTab : QueryTab[] = [{id: id, title: type + ": " + pattern, pattern: pattern, result: result, type: type}];
         setQueryPanelState(state => {
             const newTabs = state.tabs.concat(newTab);
@@ -291,7 +291,7 @@ const app = () => {
             
         setHistory(history => [pattern].concat(history));
             
-        const id = uuid();
+        const id = randomUUID();
         setQueryPanelState(state => {
             const newTabs = state.tabs.map((tab, i) => {
                 if(index === i) {
@@ -395,7 +395,7 @@ const app = () => {
         setQueryPanelState(
             state => {
                 const result = {type: QueryType.search, data: []} as SearchResultType; 
-                const newTab : QueryTab[] = [{id: uuid(), title: "New Tab", pattern: "", result: result, type: QueryType.search, expanded: true}];
+                const newTab : QueryTab[] = [{id: randomUUID(), title: "New Tab", pattern: "", result: result, type: QueryType.search, expanded: true}];
                 return {currentTab: state.tabs.length, tabs: state.tabs.concat(newTab)};
             }, 
             (state) => saveState({state, history, historyIndex})

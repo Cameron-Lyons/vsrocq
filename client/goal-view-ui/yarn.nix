@@ -498,14 +498,6 @@
       };
     }
     {
-      name = "_types_uuid___uuid_8.3.4.tgz";
-      path = fetchurl {
-        name = "_types_uuid___uuid_8.3.4.tgz";
-        url  = "https://registry.yarnpkg.com/@types/uuid/-/uuid-8.3.4.tgz";
-        sha512 = "c/I8ZRb51j+pYGAu5CrFMRxqZ2ke4y2grEBO5AUjgSkSk+qT2Ea+OdWElz/OiMf5MNpn2b17kuVBwZLQJXzihw==";
-      };
-    }
-    {
       name = "https___registry.npmjs.org__types_vscode_webview___vscode_webview_1.57.1.tgz";
       path = fetchurl {
         name = "https___registry.npmjs.org__types_vscode_webview___vscode_webview_1.57.1.tgz";
@@ -1112,22 +1104,6 @@
         name = "https___registry.npmjs.org_update_browserslist_db___update_browserslist_db_1.0.10.tgz";
         url  = "https://registry.npmjs.org/update-browserslist-db/-/update-browserslist-db-1.0.10.tgz";
         sha512 = "OztqDenkfFkbSG+tRxBeAnCVPckDBcvibKd35yDONx6OU8N7sqgwc7rCbkJ/WcYtVRZ4ba68d6byhC21GFh7sQ==";
-      };
-    }
-    {
-      name = "uuid___uuid_8.3.2.tgz";
-      path = fetchurl {
-        name = "uuid___uuid_8.3.2.tgz";
-        url  = "https://registry.yarnpkg.com/uuid/-/uuid-8.3.2.tgz";
-        sha512 = "+NYs2QeMWy+GWFOEm9xnn6HCDp0l7QBD7ml8zLUmJ+93Q5NF0NocErnwkTkXVFNiX3/fpC6afS8Dhb/gz7R7eg==";
-      };
-    }
-    {
-      name = "uuidv4___uuidv4_6.2.13.tgz";
-      path = fetchurl {
-        name = "uuidv4___uuidv4_6.2.13.tgz";
-        url  = "https://registry.yarnpkg.com/uuidv4/-/uuidv4-6.2.13.tgz";
-        sha512 = "AXyzMjazYB3ovL3q051VLH06Ixj//Knx7QnUSi1T//Ie3io6CpsPu9nVMOx5MoLWh6xV0B9J0hIaxungxXUbPQ==";
       };
     }
     {

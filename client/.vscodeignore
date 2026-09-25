@@ -11,6 +11,7 @@ vsc-extension-quickstart.md
 **/.eslintrc.json
 **/*.map
 **/*.ts
+pp-display/test/**
 
 search-ui/node_modules/**
 search-ui/index.html
