@@ -306,14 +306,6 @@
       };
     }
     {
-      name = "_types_tmp___tmp_0.2.6.tgz";
-      path = fetchurl {
-        name = "_types_tmp___tmp_0.2.6.tgz";
-        url  = "https://registry.yarnpkg.com/@types/tmp/-/tmp-0.2.6.tgz";
-        sha512 = "chhaNf2oKHlRkDGt+tiKE2Z5aJ6qalm7Z9rlLdBwmOiAAf09YQvvoLXjWK4HWPF1xU/fqvMgfNfpVoBscA/tKA==";
-      };
-    }
-    {
       name = "_types_vscode___vscode_1.85.0.tgz";
       path = fetchurl {
         name = "_types_vscode___vscode_1.85.0.tgz";
@@ -3031,14 +3023,6 @@
         name = "text_table___text_table_0.2.0.tgz";
         url  = "https://registry.yarnpkg.com/text-table/-/text-table-0.2.0.tgz";
         sha512 = "N+8UisAXDGk8PFXP4HAzVR9nbfmVJ3zYLAWiTIoqC5v5isinhr+r5uaO8+7r3BMfuNIufIsA7RdpVgacC2cSpw==";
-      };
-    }
-    {
-      name = "tmp_promise___tmp_promise_3.0.3.tgz";
-      path = fetchurl {
-        name = "tmp_promise___tmp_promise_3.0.3.tgz";
-        url  = "https://registry.yarnpkg.com/tmp-promise/-/tmp-promise-3.0.3.tgz";
-        sha512 = "RwM7MoPojPxsOBYnyd2hy0bxtIlVrihNs9pj5SUvY8Zz1sQcQG2tG1hSr8PDxfgEB8RNKDhqbIlroIarSNDNsQ==";
       };
     }
     {
