@@ -9,6 +9,10 @@ on:
   pull_request:
   workflow_dispatch:
 
+env:
+  # Keep development builds on the same supported Rocq snapshot as flake.nix.
+  PIN_COQ: 3b3cb2ce5750611d0fea03c987da1715d3617615
+
 jobs:
   build-extension:
     strategy:
@@ -17,11 +21,11 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@v7
     - name: Install Node.js
-      uses: actions/setup-node@v3
+      uses: actions/setup-node@v6
       with:
-        node-version: 16.x
+        node-version: 24.x
     - run: |
         cd client
         yarn run package
@@ -40,7 +44,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@v7
     - name: Configure Dune
       run: |
         mkdir -p ~/.config/dune
@@ -53,14 +57,13 @@ jobs:
         nix_path: nixpkgs=channel:nixos-unstable
     - name: Check each yarn.nix up to date
       run: |
-        cd client && nix-shell -p yarn2nix --run "yarn2nix > new_yarn.nix"
-        cd goal-view-ui && nix-shell -p yarn2nix --run "yarn2nix > new_yarn.nix"
-        cd ../search-ui && nix-shell -p yarn2nix --run "yarn2nix > new_yarn.nix" && cd ..
-        nix fmt new_yarn.nix goal-view-ui/new_yarn.nix search-ui/new_yarn.nix
-        nix fmt yarn.nix goal-view-ui/yarn.nix search-ui/yarn.nix
-        diff new_yarn.nix yarn.nix
-        diff goal-view-ui/new_yarn.nix goal-view-ui/yarn.nix
-        diff search-ui/new_yarn.nix search-ui/yarn.nix
+        nix shell --inputs-from . nixpkgs#yarn2nix nixpkgs#alejandra -c bash -euo pipefail -c '
+          for dir in client client/pp-display client/goal-view-ui client/search-ui; do
+            yarn2nix --lockfile="$dir/yarn.lock" --no-patch > "$dir/new_yarn.nix"
+            alejandra --quiet "$dir/new_yarn.nix" "$dir/yarn.nix"
+            diff "$dir/new_yarn.nix" "$dir/yarn.nix"
+          done
+        '
     - run: nix develop .#vsrocq-${{ matrix.coq }} -c bash -c "cd language-server && make dune-files && dune build --profile ${{ matrix.profile }}"
       if: ${{matrix.coq != 9}}
     - run: nix develop .#vsrocq-${{ matrix.coq }} -c bash -c "cd language-server && make dune-files && dune build --profile ${{ matrix.profile }}"
@@ -95,7 +98,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@v7
 
     - name: Use OCaml ${{ matrix.ocaml-compiler }}
       uses: avsm/setup-ocaml@v3
@@ -107,7 +110,7 @@ jobs:
         OPAMYES: true
       run: |
         opam repo add rocq-core-dev https://rocq-prover.org/opam/core-dev
-        if [ "${{ matrix.coq }}" = "dev" ]; then opam install rocq-core.dev; else opam pin add coq-core ${{ matrix.coq }}; fi
+        if [ "${{ matrix.coq }}" = "dev" ]; then opam pin add rocq-core "git+https://github.com/rocq-prover/rocq.git#$PIN_COQ"; else opam pin add coq-core ${{ matrix.coq }}; fi
         opam pin add vsrocq-language-server ./language-server/ --with-doc --with-test -y
 
     - run: |
@@ -115,9 +118,9 @@ jobs:
         echo "vsrocqtop=`which vsrocqtop`" >> $GITHUB_ENV
         vsrocqtop -v
 
-    - uses: actions/setup-node@v3
+    - uses: actions/setup-node@v6
       with:
-        node-version: 16
+        node-version: 24.x
 
     - run: cd client && yarn run package
     - run: eval $(opam env) && cd client && xvfb-run yarn test
@@ -137,7 +140,7 @@ jobs:
         git config --global core.eol lf
 
     - name: Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@v7
 
     - name: Build language server
       run: .\language-server\build-windows-platform.bat
@@ -146,9 +149,9 @@ jobs:
 
     - run: C:\ci\cygwin64\bin\bash.exe --login -c 'echo vsrocqtop=$(cygpath -m $(which vsrocqtop))' >> $Env:GITHUB_ENV
 
-    - uses: actions/setup-node@v3
+    - uses: actions/setup-node@v6
       with:
-        node-version: 16
+        node-version: 24.x
 
     - run: cd client && yarn run package && yarn test
       env:
@@ -164,7 +167,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@v7
 
     - name: Use OCaml ${{ matrix.ocaml-compiler }}
       uses: avsm/setup-ocaml@v3
@@ -177,6 +180,7 @@ jobs:
       run: |
         opam repo add rocq-core-dev https://rocq-prover.org/opam/core-dev
         opam install dune
+        opam pin add rocq-core "git+https://github.com/rocq-prover/rocq.git#$PIN_COQ" --no-action
         opam install ./language-server/vsrocq-language-server.opam --deps-only --with-doc --with-test --ignore-constraints-on dune
       
     - name: Build vsrocq-language-server
@@ -189,9 +193,9 @@ jobs:
         eval $(opam env)
         cd language-server && make test
 
-    - uses: actions/setup-node@v3
+    - uses: actions/setup-node@v6
       with:
-        node-version: 16
+        node-version: 24.x
 
     - run: |
         eval $(opam env)
@@ -211,7 +215,7 @@ jobs:
     needs: [build-extension, nix-dev-build, install-opam, dev-setup-opam]
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v7
 
       - name: Inject slug/short variables
         uses: rlespinasse/github-slug-action@v4
@@ -223,7 +227,7 @@ jobs:
           git archive -o ../vsrocq-language-server-$VERSION.tar.gz --prefix=vsrocq-language-server-$VERSION/ $GITHUB_SHA .
 
       - name: Release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         if: startsWith(github.ref, 'refs/tags/')
         with:
           files: vsrocq-language-server-*.tar.gz
@@ -237,11 +241,11 @@ jobs:
     if: success()
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@v7
     - name: Install Node.js
-      uses: actions/setup-node@v3
+      uses: actions/setup-node@v6
       with:
-        node-version: 16.x
+        node-version: 24.x
     - name: Pre publish phase
       run: |
         cd client
